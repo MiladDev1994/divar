@@ -12,9 +12,9 @@ class AuthController {
         try {
             const {mobile} = req.body;
             await this.#service.sendOTP(mobile)
-            return {
+            return res.json({
                 message: AuthMessage.sendOTPSuccessfully
-            }
+            })
         } catch (err) {
             next(err)
         }
@@ -22,7 +22,22 @@ class AuthController {
 
     async checkOTP(req, res, next) {
         try {
+            const {mobile, code} = req.body;
+            const token = await this.#service.checkOTP(mobile, code)
+            return res.json({
+                message: AuthMessage.loginSuccessfully,
+                token
+            })
 
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    async logout(req, res, next) {
+        try {
+            // من توکن رو تو فرانت نگه میدارم
+            res.json("من توکن رو تو فرانت نگه میدارم")
         } catch (err) {
             next(err)
         }
